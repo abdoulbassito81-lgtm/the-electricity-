@@ -1,0 +1,1047 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Electrobass service</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Electrobass service : bleu foncé, orange, blanc. */
+:root{
+  --bleu:#0B2545; --bleu-2:#13315C; --orange:#F58220; --orange-fonce:#B85800;
+  --bg:#F5F7FA; --surface:#FFFFFF; --texte:#14202E; --doux:#55657A; --ligne:#DCE3EC;
+  --ok:#1F8A4C; --danger:#B3261E;
+  --f-titre:"Space Grotesk",system-ui,sans-serif; --f-texte:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bleu:#06142A; --bleu-2:#0E2547; --orange:#FF9438; --orange-fonce:#FF9438;
+  --bg:#0A1424; --surface:#112038; --texte:#E8EEF6; --doux:#9FB0C6; --ligne:#243652;
+  --ok:#4CC27F; --danger:#FF8A80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bleu:#06142A; --bleu-2:#0E2547; --orange:#FF9438; --orange-fonce:#FF9438;
+  --bg:#0A1424; --surface:#112038; --texte:#E8EEF6; --doux:#9FB0C6; --ligne:#243652;
+  --ok:#4CC27F; --danger:#FF8A80; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--texte);font-family:var(--f-texte);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+h1,h2,h3{font-family:var(--f-titre);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:700}
+h2{font-size:clamp(1.35rem,4vw,1.8rem);font-weight:700}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto}
+.band{margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+[hidden]{display:none!important}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bleu);color:#fff}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bleu)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-titre);font-weight:700;font-size:1.02rem}
+.logo small{display:block;font-family:var(--f-texte);font-weight:500;font-size:.72rem;opacity:.75}
+nav.menu{display:flex;gap:4px;align-items:center}
+nav.menu a,nav.menu button{padding:8px 10px;border-radius:8px;text-decoration:none;font:inherit;font-size:.92rem;font-weight:500;color:#fff;background:transparent;border:0;cursor:pointer;opacity:.92}
+nav.menu a:hover,nav.menu button:hover,nav.menu a[aria-current="page"]{background:rgba(255,255,255,.14);opacity:1}
+nav.menu .cta{background:var(--orange);color:#1A1000;font-weight:600;opacity:1}
+.burger{display:none;background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:10px;padding:8px 12px;font:inherit;font-weight:600;cursor:pointer}
+@media(max-width:900px){
+  .burger{display:block}
+  nav.menu{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bleu);flex-direction:column;align-items:stretch;padding:8px max(16px,env(safe-area-inset-left,0px)) 14px;border-top:1px solid rgba(255,255,255,.15)}
+  nav.menu.open{display:flex}
+  nav.menu a,nav.menu button{padding:12px 10px;text-align:left}
+}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 18px;font:inherit;font-weight:600;text-decoration:none;cursor:pointer;text-align:center;min-height:48px}
+.btn:disabled{opacity:.55;cursor:default}
+.btn-or{background:var(--orange);color:#1A1000}
+.btn-wa{background:#1FA855;color:#fff}
+.btn-clair{background:transparent;color:inherit;border:1.5px solid currentColor}
+.btn-bleu{background:var(--bleu);color:#fff}
+.btn-rouge{background:transparent;color:var(--danger);border:1.5px solid var(--danger)}
+.btn-sm{padding:9px 14px;min-height:40px;font-size:.92rem;border-radius:10px}
+.rangee{display:flex;flex-wrap:wrap;gap:10px}
+
+.hero{background:var(--bleu);color:#fff;position:relative;overflow:hidden}
+.hero .wrap{padding-block:44px 52px;position:relative;z-index:1;display:grid;gap:22px}
+.hero p.lead{max-width:60ch;font-size:1.05rem;opacity:.93}
+.hero .slogan{font-family:var(--f-titre);color:var(--orange);font-weight:500}
+.hero svg.fond{position:absolute;right:-40px;top:0;height:100%;width:min(60%,520px);opacity:.16;z-index:0}
+.tag{display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:600}
+section.bloc{padding-block:36px}
+section.bloc>.wrap>header{margin-bottom:18px;display:grid;gap:6px}
+.sous{color:var(--doux);max-width:62ch}
+.alt{background:var(--surface);border-block:1px solid var(--ligne)}
+.grille{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
+.carte-svc{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--ligne);border-radius:14px;padding:16px;text-decoration:none;min-width:0}
+.alt .carte-svc{background:var(--bg)}
+.carte-svc:hover{border-color:var(--orange)}
+.ico{flex:none;width:46px;height:46px;border-radius:12px;background:var(--bleu);display:grid;place-items:center}
+.ico svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.carte-svc p{color:var(--doux);font-size:.93rem;margin-top:3px}
+.boite{background:var(--surface);border:1px solid var(--ligne);border-radius:14px;padding:18px;min-width:0}
+.alt .boite{background:var(--bg)}
+.liste{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.liste li{padding-left:22px;position:relative}
+.liste li::before{content:"";position:absolute;left:2px;top:.6em;width:9px;height:9px;border-radius:2px;background:var(--orange)}
+.deux{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.fil{font-size:.88rem;color:var(--doux);margin-bottom:10px}
+.fil a{color:var(--doux)}
+.page{padding-block:30px 40px;display:grid;gap:18px}
+.page h1{font-size:clamp(1.6rem,5vw,2.3rem)}
+.texte{max-width:68ch;display:grid;gap:12px}
+.texte h2{font-size:1.2rem;margin-top:10px}
+
+form.f{display:grid;gap:14px}
+label{display:grid;gap:5px;font-weight:600;font-size:.93rem}
+input,select,textarea{font:inherit;color:var(--texte);background:var(--bg);border:1.5px solid var(--ligne);border-radius:10px;padding:12px;width:100%;min-height:48px}
+.alt input,.alt select,.alt textarea{background:var(--surface)}
+textarea{min-height:110px;resize:vertical}
+input[type=checkbox],input[type=radio]{width:22px;height:22px;min-height:0;accent-color:var(--orange)}
+.choix-ligne{display:flex;gap:10px;align-items:center;font-weight:500}
+fieldset{border:1.5px solid var(--ligne);border-radius:10px;padding:12px;display:grid;gap:10px;margin:0;min-width:0}
+legend{font-weight:600;font-size:.93rem;padding:0 6px}
+.aide{font-size:.85rem;color:var(--doux);font-weight:400}
+.note{border-left:4px solid var(--orange);background:var(--surface);padding:12px 14px;border-radius:0 10px 10px 0;color:var(--doux);font-size:.93rem}
+.erreur{border-left:4px solid var(--danger);background:var(--surface);padding:12px 14px;border-radius:0 10px 10px 0;color:var(--danger);font-size:.93rem}
+.vide{border:2px dashed var(--ligne);border-radius:14px;padding:22px 16px;text-align:center;color:var(--doux);display:grid;gap:10px;justify-items:center}
+
+.pastille{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:600;border:1px solid currentColor;white-space:nowrap}
+.s-nouvelle,.s-acceptee{color:var(--doux)}
+.s-montant_declare,.s-litige,.s-due{color:var(--orange-fonce)}
+.s-confirmee,.s-payee,.s-actif{color:var(--ok)}
+.s-annulee,.s-bloque{color:var(--danger)}
+.s-en_attente,.s-declaree_payee{color:var(--orange-fonce)}
+.liste-cartes{display:grid;gap:12px}
+.demande{display:grid;gap:10px}
+.demande .tete{display:flex;gap:8px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.demande .meta{color:var(--doux);font-size:.88rem}
+.demande .desc{white-space:pre-line;overflow-wrap:anywhere}
+.montant{font-family:var(--f-titre);font-weight:700;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.contact{background:var(--bg);border:1px solid var(--ligne);border-radius:10px;padding:10px 12px;display:grid;gap:8px}
+.alt .contact{background:var(--surface)}
+.inline{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.inline label{flex:1 1 160px}
+.resume{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.resume .boite{padding:14px}
+.resume .gros{font-family:var(--f-titre);font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.onglets{display:flex;gap:6px;flex-wrap:wrap}
+.onglets button{font:inherit;font-weight:600;border:1.5px solid var(--ligne);background:var(--surface);color:var(--texte);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:40px}
+.onglets button[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:#fff}
+
+footer.pied{background:var(--bleu);color:#fff;margin-top:20px}
+footer .wrap{padding-block:28px;display:grid;gap:12px}
+footer a{color:var(--orange)}
+footer small{opacity:.8}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 90px);z-index:60;background:var(--bleu);color:#fff;padding:12px 16px;border-radius:12px;max-width:min(92vw,420px);box-shadow:0 8px 28px rgba(0,0,0,.35);font-size:.94rem}
+.toast.err{background:var(--danger);color:#fff}
+
+.bulle-btn{position:fixed;right:max(16px,calc(env(safe-area-inset-right,0px) + 12px));bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:40;background:var(--orange);color:#1A1000;border:0;border-radius:999px;padding:13px 18px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.28);display:flex;gap:8px;align-items:center;min-height:52px}
+.chat{position:fixed;right:max(12px,env(safe-area-inset-right,0px));left:max(12px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 80px);max-width:400px;margin-left:auto;z-index:41;background:var(--surface);border:1px solid var(--ligne);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:min(70vh,560px);overflow:hidden}
+.chat .ch-tete{background:var(--bleu);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chat .ch-tete b{font-family:var(--f-titre)}
+.chat .ch-tete button{background:transparent;border:0;color:#fff;font-size:1.4rem;line-height:1;cursor:pointer;padding:4px 8px}
+.msgs{padding:14px;overflow-y:auto;display:grid;gap:10px;align-content:start;flex:1}
+.m{max-width:88%;padding:10px 12px;border-radius:12px;font-size:.94rem;white-space:pre-line}
+.m.bot{background:var(--bg);border:1px solid var(--ligne);justify-self:start}
+.m.moi{background:var(--bleu);color:#fff;justify-self:end}
+.choix{padding:10px 12px 14px;display:flex;flex-wrap:wrap;gap:8px;border-top:1px solid var(--ligne)}
+.choix button,.choix a{font:inherit;font-size:.88rem;font-weight:600;border:1.5px solid var(--bleu-2);background:transparent;color:var(--texte);border-radius:999px;padding:8px 12px;cursor:pointer;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
+.choix .wa{background:#1FA855;border-color:#1FA855;color:#fff}
+@media (prefers-color-scheme: dark){.choix button,.choix a{border-color:var(--ligne)}}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:.93rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--ligne)}
+th{background:var(--bleu);color:#fff;font-weight:600}
+.defil{overflow-x:auto;border:1px solid var(--ligne);border-radius:12px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:no-preference){.carte-svc,.btn{transition:border-color .15s,filter .15s}}
+
+.demo{background:var(--orange);color:#1A1000;margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));font-size:.86rem}
+.demo .wrap{display:grid;gap:8px}
+.demo b{font-family:var(--f-titre)}
+.demo .rangee{gap:6px}
+.demo button{font:inherit;font-size:.84rem;font-weight:600;background:#0B2545;color:#fff;border:0;border-radius:999px;padding:7px 12px;cursor:pointer;min-height:36px}
+.demo button.clair{background:transparent;color:#1A1000;border:1.5px solid #1A1000}
+
+</style>
+<div class="demo" id="demo"><div class="wrap"><span><b>DÉMONSTRATION</b> · comptes et données d'exemple, rien n'est enregistré. Essayez l'application comme :</span>
+<div class="rangee"><button type="button" data-d="22670000001">Client</button><button type="button" data-d="22676000001">Partenaire</button><button type="button" data-d="22676000003">Partenaire en attente</button><button type="button" data-d="22600000000">Administrateur</button><button type="button" class="clair" data-d="reset">Tout réinitialiser</button></div></div></div>
+<div id="app"></div>
+<script>
+/* Serveur de démonstration en mémoire : imite Supabase avec les mêmes règles que supabase.sql.
+   Rien n'est enregistré : tout disparaît quand on recharge la page. */
+(function () {
+  var mail = function (d) { return "p" + d + "@electrobass-service.app"; };
+  var db, session, listeners;
+  function uid() { return "id" + Math.random().toString(36).slice(2, 10); }
+  function ago(h) { return new Date(Date.now() - h * 3600000).toISOString(); }
+  function calc(m) { m = Number(m) || 0; if (m <= 0) return 0; return Math.round(m * (m < 10000 ? 0.02 : 0.10)); }
+  function reset() {
+    db = { users: [], profiles: [], requests: [] };
+    function add(id, tel, mdp, role, nom, quartier, services, status) {
+      db.users.push({ id: id, email: mail(tel), pw: mdp });
+      db.profiles.push({ id: id, role: role, full_name: nom, phone: tel, quartier: quartier, services: services || [], status: status, created_at: ago(200) });
+    }
+    add("adm", "22600000000", "demo123", "admin", "Propriétaire", "Ouagadougou", [], "actif");
+    add("cli", "22670000001", "demo123", "client", "Awa Traoré", "Tampouy", [], "actif");
+    add("cl2", "22670000002", "demo123", "client", "Boureima Kaboré", "Gounghin", [], "actif");
+    add("pro", "22676000001", "demo123", "partner", "Issa Ouédraogo", "Zogona", ["depannage", "batiment"], "actif");
+    add("pr2", "22676000002", "demo123", "partner", "Moussa Sawadogo", "Pissy", ["solaire", "cameras"], "actif");
+    add("pr3", "22676000003", "demo123", "partner", "Adama Compaoré", "Dassasgho", ["industriel"], "en_attente");
+    db.requests = [
+      { id: "r1", client_id: "cli", partner_id: null, service: "depannage", quartier: "Tampouy", description: "Le disjoncteur saute dès que j'allume le fer à repasser.", urgent: true, status: "nouvelle", created_at: ago(2) },
+      { id: "r2", client_id: "cl2", partner_id: null, service: "solaire", quartier: "Gounghin", description: "Je veux installer des panneaux solaires pour ma boutique.", urgent: false, status: "nouvelle", created_at: ago(5) },
+      { id: "r3", client_id: "cli", partner_id: "pro", service: "batiment", quartier: "Tampouy", description: "Installation électrique d'une petite boutique : 6 prises, 4 lampes, un tableau.", urgent: false, status: "acceptee", created_at: ago(30), accepted_at: ago(28) },
+      { id: "r4", client_id: "cl2", partner_id: "pro", service: "depannage", quartier: "Gounghin", description: "Prise brûlée dans le salon.", urgent: false, status: "montant_declare", amount: 6000, created_at: ago(50), declared_at: ago(40) },
+      { id: "r5", client_id: "cl2", partner_id: "pro", service: "depannage", quartier: "Gounghin", description: "Ventilateur à remplacer.", urgent: false, status: "confirmee", amount: 25000, commission: 2500, commission_status: "declaree_payee", created_at: ago(90) },
+      { id: "r6", client_id: "cli", partner_id: "pr2", service: "cameras", quartier: "Tampouy", description: "Installation de 4 caméras.", urgent: false, status: "litige", amount: 80000, created_at: ago(120) }
+    ];
+  }
+  reset();
+  listeners = [];
+  session = null;
+  function me() { return session ? db.profiles.filter(function (p) { return p.id === session.id; })[0] : null; }
+  function notify(ev) { listeners.forEach(function (f) { try { f(ev, session ? { user: session } : null); } catch (e) {} }); }
+  function clone(x) { return JSON.parse(JSON.stringify(x)); }
+  function visibleRequests() {
+    var p = me(); if (!p) return [];
+    return db.requests.filter(function (r) {
+      if (p.role === "admin" && p.status === "actif") return true;
+      if (r.client_id === p.id || r.partner_id === p.id) return true;
+      return p.role === "partner" && p.status === "actif" && r.status === "nouvelle" && p.services.indexOf(r.service) >= 0;
+    });
+  }
+  function visibleProfiles() {
+    var p = me(); if (!p) return [];
+    return db.profiles.filter(function (x) { return x.id === p.id || p.role === "admin"; });
+  }
+  function builder(table) {
+    var f = [], ord = null, lim = null;
+    var x = {
+      select: function () { return x; },
+      eq: function (k, v) { f.push([k, v]); return x; },
+      order: function (k, d) { ord = [k, d && d.ascending === false]; return x; },
+      limit: function (n) { lim = n; return x; },
+      insert: function (v) {
+        var p = me();
+        if (table !== "requests" || !p || p.role !== "client" || v.client_id !== p.id) return Promise.resolve({ error: { message: "new row violates row-level security policy" } });
+        db.requests.unshift({ id: uid(), client_id: p.id, partner_id: null, service: v.service, quartier: v.quartier, description: v.description, urgent: !!v.urgent, status: "nouvelle", created_at: new Date().toISOString() });
+        return Promise.resolve({ error: null });
+      },
+      maybeSingle: function () { return run().then(function (r) { return { data: r.data[0] || null, error: null }; }); },
+      then: function (a, b) { return run().then(a, b); }
+    };
+    function run() {
+      var rows = clone(table === "requests" ? visibleRequests() : visibleProfiles());
+      f.forEach(function (c) { rows = rows.filter(function (r) { return r[c[0]] === c[1]; }); });
+      if (ord) rows.sort(function (a, b) { var A = a[ord[0]] || "", B = b[ord[0]] || ""; return (A < B ? -1 : A > B ? 1 : 0) * (ord[1] ? -1 : 1); });
+      if (lim) rows = rows.slice(0, lim);
+      return Promise.resolve({ data: rows, error: null });
+    }
+    return x;
+  }
+  function req(id) { return db.requests.filter(function (r) { return r.id === id; })[0]; }
+  function fail(m) { return { data: null, error: { message: m } }; }
+  var RPC = {
+    accept_request: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!p || p.role !== "partner" || p.status !== "actif") return fail("Votre compte partenaire n'est pas actif.");
+      if (db.requests.some(function (x) { return x.partner_id === p.id && x.commission_status === "due"; })) return fail("Payez d'abord votre commission en attente pour recevoir de nouvelles demandes.");
+      if (!r || r.status !== "nouvelle" || p.services.indexOf(r.service) < 0 || r.client_id === p.id) return fail("Cette demande n'est plus disponible.");
+      r.partner_id = p.id; r.status = "acceptee"; r.accepted_at = new Date().toISOString(); return { data: null, error: null };
+    },
+    declare_amount: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!(a.amt > 0)) return fail("Montant invalide.");
+      if (!r || !p || r.partner_id !== p.id || r.status !== "acceptee") return fail("Action impossible sur ce chantier.");
+      r.amount = a.amt; r.status = "montant_declare"; r.declared_at = new Date().toISOString(); return { data: null, error: null };
+    },
+    report_commission_paid: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!r || !p || r.partner_id !== p.id || r.commission_status !== "due") return fail("Action impossible.");
+      r.commission_status = "declaree_payee"; return { data: null, error: null };
+    },
+    confirm_amount: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!r || !p || r.client_id !== p.id || r.status !== "montant_declare") return fail("Action impossible.");
+      r.status = "confirmee"; r.commission = calc(r.amount); r.commission_status = "due"; r.confirmed_at = new Date().toISOString(); return { data: null, error: null };
+    },
+    contest_amount: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!r || !p || r.client_id !== p.id || r.status !== "montant_declare") return fail("Action impossible.");
+      r.status = "litige"; return { data: null, error: null };
+    },
+    cancel_request: function (a) {
+      var p = me(), r = req(a.rid);
+      if (!r || !p || r.client_id !== p.id || ["nouvelle", "acceptee"].indexOf(r.status) < 0) return fail("Cette demande ne peut plus être annulée.");
+      r.status = "annulee"; return { data: null, error: null };
+    },
+    request_contact: function (a) {
+      var p = me(), r = req(a.rid); if (!r || !p || r.status === "nouvelle" || r.status === "annulee" || !r.partner_id) return { data: [], error: null };
+      function pr(id) { var q = db.profiles.filter(function (x) { return x.id === id; })[0]; return { role: q.role, full_name: q.full_name, phone: q.phone }; }
+      if (p.id === r.client_id) return { data: [pr(r.partner_id)], error: null };
+      if (p.id === r.partner_id) return { data: [pr(r.client_id)], error: null };
+      if (p.role === "admin") return { data: [pr(r.client_id), pr(r.partner_id)], error: null };
+      return { data: [], error: null };
+    },
+    admin_set_status: function (a) {
+      var p = me(); if (!p || p.role !== "admin") return fail("Réservé à l'administrateur.");
+      db.profiles.forEach(function (x) { if (x.id === a.uid && x.role !== "admin") x.status = a.st; }); return { data: null, error: null };
+    },
+    admin_confirm_commission: function (a) {
+      var p = me(), r = req(a.rid); if (!p || p.role !== "admin") return fail("Réservé à l'administrateur.");
+      if (!r || ["due", "declaree_payee"].indexOf(r.commission_status) < 0) return fail("Action impossible.");
+      r.commission_status = "payee"; return { data: null, error: null };
+    },
+    admin_resolve_dispute: function (a) {
+      var p = me(), r = req(a.rid); if (!p || p.role !== "admin") return fail("Réservé à l'administrateur.");
+      if (!(a.amt > 0)) return fail("Montant invalide.");
+      if (!r || r.status !== "litige") return fail("Action impossible.");
+      r.amount = a.amt; r.status = "confirmee"; r.commission = calc(a.amt); r.commission_status = "due"; r.confirmed_at = new Date().toISOString(); return { data: null, error: null };
+    }
+  };
+  var client = {
+    auth: {
+      getSession: function () { return Promise.resolve({ data: { session: session ? { user: session } : null } }); },
+      onAuthStateChange: function (f) { listeners.push(f); return { data: { subscription: { unsubscribe: function () {} } } }; },
+      signInWithPassword: function (a) {
+        var u = db.users.filter(function (x) { return x.email === a.email && x.pw === a.password; })[0];
+        if (!u) return Promise.resolve({ data: null, error: { message: "Invalid login credentials" } });
+        session = { id: u.id }; notify("SIGNED_IN"); return Promise.resolve({ data: { session: { user: session } }, error: null });
+      },
+      signUp: function (a) {
+        if (db.users.some(function (x) { return x.email === a.email; })) return Promise.resolve({ data: null, error: { message: "User already registered" } });
+        if (!a.password || a.password.length < 6) return Promise.resolve({ data: null, error: { message: "Password should be at least 6 characters" } });
+        var m = (a.options && a.options.data) || {}, id = uid(), role = m.role === "partner" ? "partner" : "client";
+        db.users.push({ id: id, email: a.email, pw: a.password });
+        db.profiles.push({ id: id, role: role, full_name: (m.full_name || "Sans nom"), phone: m.phone || "", quartier: m.quartier || "", services: m.services || [], status: role === "partner" ? "en_attente" : "actif", created_at: new Date().toISOString() });
+        session = { id: id }; notify("SIGNED_IN"); return Promise.resolve({ data: { session: { user: session } }, error: null });
+      },
+      signOut: function () { session = null; notify("SIGNED_OUT"); return Promise.resolve({ error: null }); }
+    },
+    from: builder,
+    rpc: function (n, a) { var f = RPC[n]; return Promise.resolve(f ? f(a || {}) : fail("Fonction inconnue.")); }
+  };
+  window.supabase = { createClient: function () { return client; } };
+  window.__demo = {
+    login: function (tel) { return client.auth.signInWithPassword({ email: mail(tel), password: "demo123" }); },
+    reset: function () { reset(); session = null; notify("SIGNED_OUT"); }
+  };
+})();
+
+</script>
+<script>window.EB_CONFIG={SUPABASE_URL:'demo',SUPABASE_ANON_KEY:'demo',WHATSAPP:'22606146778',TEL_AFFICHE:'06 14 67 78'};</script>
+<script>
+"use strict";
+(function () {
+
+/* ============ RÉGLAGES ============ */
+var C = window.EB_CONFIG || {};
+var SITE = {
+  nom: "Electrobass service",
+  slogan: "Votre énergie, notre expertise, vos solutions.",
+  ville: "Ouagadougou, Burkina Faso",
+  wa: C.WHATSAPP || "22606146778",
+  tel: C.TEL_AFFICHE || "06 14 67 78",
+  paiement: C.PAIEMENT_TEXTE || "Envoyez la commission par mobile money puis touchez « J'ai payé ».",
+  seuil: 10000, tauxBas: 2, tauxHaut: 10   /* même barème que supabase.sql */
+};
+var sb = (C.SUPABASE_URL && C.SUPABASE_ANON_KEY && window.supabase)
+  ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
+var S = { user: null, profile: null, pret: false };
+
+var ICONES = {
+  eclair:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  batiment:'<path d="M4 21V5l8-3 8 3v16M9 21v-5h6v5M8 9h2M14 9h2M8 13h2M14 13h2"/>',
+  soleil:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
+  usine:'<path d="M3 21V10l6 4v-4l6 4V6h3v15zM7 21v-3M12 21v-3"/>',
+  camera:'<path d="M3 8h13v9H3zM16 11l5-3v9l-5-3"/><circle cx="9.5" cy="12.5" r="2"/>',
+  puce:'<rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  equipe:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 6 1.5 6 5"/>'
+};
+function ico(n){ return '<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONES[n] + '</svg></span>'; }
+
+var SERVICES = [
+ {id:"depannage",icone:"eclair",titre:"Dépannage électrique",court:"Pannes, disjoncteurs, prises, éclairages.",
+  desc:"Une panne de courant, un disjoncteur qui saute, une prise ou un éclairage qui ne fonctionne plus : nous recherchons l'origine du problème et nous le réparons.",
+  points:["Recherche de pannes","Réparation électrique","Problèmes de disjoncteurs","Prises et éclairages","Diagnostics","Maintenance"],
+  choix:"Je souhaite un dépannage",
+  msg:"Bonjour Electrobass service, je vous contacte depuis votre site Web. J'ai besoin d'un dépannage électrique."},
+ {id:"batiment",icone:"batiment",titre:"Installation électrique bâtiment",court:"Maisons, boutiques, bureaux, câblage, tableaux.",
+  desc:"Installation électrique complète ou rénovation pour votre maison, votre boutique ou vos bureaux.",
+  points:["Installation domestique","Boutiques et bureaux","Câblage","Tableaux électriques","Éclairage","Rénovation et maintenance"],
+  choix:"Je veux installer l'électricité dans un bâtiment",
+  msg:"Bonjour, je souhaite réaliser une installation électrique dans un bâtiment et obtenir un devis."},
+ {id:"solaire",icone:"soleil",titre:"Installation solaire",court:"Panneaux, onduleurs, systèmes autonomes ou hybrides.",
+  desc:"Étude et installation de systèmes solaires adaptés à vos besoins, avec maintenance.",
+  points:["Panneaux solaires","Systèmes autonomes","Systèmes hybrides","Onduleurs","Dimensionnement","Maintenance solaire"],
+  choix:"Je souhaite une installation solaire",
+  msg:"Bonjour, je souhaite obtenir des renseignements et un devis pour une installation solaire."},
+ {id:"industriel",icone:"usine",titre:"Électricité industrielle",court:"Armoires, moteurs, contacteurs, protections.",
+  desc:"Câblage d'armoires électriques et commande de moteurs. Les chantiers importants sont réalisés avec des professionnels expérimentés.",
+  points:["Câblage d'armoires électriques","Commande des moteurs","Contacteurs et relais thermiques","Protections","Maintenance","Installations industrielles"],
+  choix:"J'ai un projet électrique industriel",
+  msg:"Bonjour, j'ai un projet d'installation ou de maintenance électrique industrielle."},
+ {id:"cameras",icone:"camera",titre:"Vidéosurveillance",court:"Caméras, configuration, maintenance.",
+  desc:"Installation et configuration de caméras pour surveiller votre maison, votre commerce ou vos locaux.",
+  points:["Installation de caméras","Configuration","Systèmes de surveillance","Maintenance"],
+  choix:"Je souhaite installer des caméras",
+  msg:"Bonjour, je souhaite obtenir des informations pour installer des caméras de surveillance."},
+ {id:"electronique",icone:"puce",titre:"Électronique et composants",court:"Composants, Arduino, capteurs, modules.",
+  desc:"Composants électroniques et accessoires Arduino, proposés sur commande après vérification de la disponibilité auprès des fournisseurs.",
+  points:["Composants électroniques","Arduino","Capteurs et modules","Accessoires","Recherche de matériel"],
+  choix:"Je recherche des composants électroniques",
+  msg:"Bonjour, je recherche un composant ou du matériel électronique."}
+];
+var CATEGORIES_BOUTIQUE = [
+ {nom:"Cartes Arduino",txt:"Uno, Nano, Mega et compatibles."},
+ {nom:"Capteurs",txt:"Température, distance, mouvement, gaz, humidité."},
+ {nom:"Modules",txt:"Relais, Bluetooth, Wi-Fi, afficheurs, moteurs."},
+ {nom:"Composants de base",txt:"Résistances, condensateurs, diodes, transistors, LED."},
+ {nom:"Câbles et accessoires",txt:"Fils de connexion, plaques d'essai, connecteurs, alimentations."},
+ {nom:"Autre composant",txt:"Vous ne trouvez pas ? Dites-nous ce que vous cherchez."}
+];
+var REALISATIONS = [];  /* ajoutez vos vraies photos ici : {src:"photo1.jpg", legende:"Tableau électrique"} */
+
+var STATUTS = {
+  nouvelle:"En attente d'un partenaire", acceptee:"Partenaire trouvé", montant_declare:"Montant à confirmer",
+  confirmee:"Chantier confirmé", litige:"Montant contesté", annulee:"Annulée"
+};
+var STATUTS_COMM = { due:"Commission à payer", declaree_payee:"Paiement à vérifier", payee:"Commission payée" };
+var STATUTS_PRO = { actif:"Actif", en_attente:"En attente de validation", bloque:"Bloqué" };
+
+/* ============ OUTILS ============ */
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function fcfa(n){ return Math.round(n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " F"; }
+function waLien(msg, num){ return "https://wa.me/" + (num || SITE.wa) + "?text=" + encodeURIComponent(msg); }
+function commission(m){ m = Number(m) || 0; if (m <= 0) return 0; return Math.round(m * (m < SITE.seuil ? SITE.tauxBas : SITE.tauxHaut) / 100); }
+function tauxPour(m){ return m < SITE.seuil ? SITE.tauxBas : SITE.tauxHaut; }
+function svc(id){ for (var i = 0; i < SERVICES.length; i++) if (SERVICES[i].id === id) return SERVICES[i]; return null; }
+function svcNom(id){ var s = svc(id); return s ? s.titre : id; }
+function chiffres(s){ return String(s || "").replace(/\D/g, ""); }
+function normTel(s){
+  var d = chiffres(s);
+  if (d.indexOf("00226") === 0) d = d.slice(2);
+  if (d.length === 8) d = "226" + d;
+  return d;
+}
+function telValide(d){ return /^226\d{8}$/.test(d); }
+function telAffiche(d){ d = String(d || ""); if (d.indexOf("226") === 0 && d.length === 11) return "+226 " + d.slice(3).replace(/(\d{2})(?=\d)/g, "$1 "); return d; }
+function emailFictif(d){ return "p" + d + "@electrobass-service.app"; }
+function dateCourte(t){ try { return new Date(t).toLocaleDateString("fr-FR", {day:"2-digit", month:"short"}); } catch (e) { return ""; } }
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+var toastT;
+function toast(msg, err){
+  var t = $(".toast"); if (t) t.remove();
+  t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.setAttribute("role", "status"); t.textContent = msg;
+  document.body.appendChild(t); clearTimeout(toastT); toastT = setTimeout(function(){ if (t.parentNode) t.remove(); }, err ? 6000 : 3000);
+}
+function msgErreur(e){
+  var m = (e && e.message) || "";
+  if (/Invalid login/i.test(m)) return "Numéro ou mot de passe incorrect.";
+  if (/already registered|already exists/i.test(m)) return "Ce numéro a déjà un compte. Connectez-vous.";
+  if (/Password should be at least/i.test(m)) return "Le mot de passe doit avoir au moins 6 caractères.";
+  if (/Failed to fetch|NetworkError|network/i.test(m)) return "Pas de connexion internet. Réessayez.";
+  if (/rate limit|too many/i.test(m)) return "Trop d'essais. Attendez un peu puis réessayez.";
+  return m || "Une erreur est survenue. Réessayez.";
+}
+function rpc(nom, args){
+  return sb.rpc(nom, args).then(function(r){ if (r.error) throw r.error; return r.data; });
+}
+function confirmeDouble(btn, texte, fn){
+  if (btn.getAttribute("data-sur") !== "1") {
+    btn.setAttribute("data-sur", "1"); btn.setAttribute("data-old", btn.textContent); btn.textContent = texte;
+    setTimeout(function(){ if (btn.isConnected) { btn.setAttribute("data-sur", "0"); btn.textContent = btn.getAttribute("data-old"); } }, 4000);
+    return;
+  }
+  fn();
+}
+
+/* ============ SESSION ============ */
+function chargerProfil(){
+  if (!sb || !S.user) { S.profile = null; return Promise.resolve(); }
+  return sb.from("profiles").select("*").eq("id", S.user.id).maybeSingle().then(function(r){ S.profile = r.data || null; });
+}
+function initSession(){
+  if (!sb) { S.pret = true; return Promise.resolve(); }
+  return sb.auth.getSession().then(function(r){
+    S.user = r.data && r.data.session ? r.data.session.user : null;
+    return chargerProfil();
+  }).catch(function(){ S.user = null; S.profile = null; }).then(function(){
+    S.pret = true;
+    sb.auth.onAuthStateChange(function(ev, session){
+      var neuf = session ? session.user : null;
+      var change = (neuf && neuf.id) !== (S.user && S.user.id);
+      S.user = neuf;
+      if (change) setTimeout(function(){ chargerProfil().then(function(){ monterEntete(); route(); }); }, 0);
+    });
+  });
+}
+
+/* ============ PIÈCES D'INTERFACE ============ */
+function optionsServices(sel, sansElec){
+  return '<option value="">Choisir…</option>' + SERVICES.filter(function(s){ return !(sansElec && s.id === "electronique"); }).map(function(s){
+    return '<option value="' + s.id + '"' + (s.id === sel ? ' selected' : '') + '>' + esc(s.titre) + '</option>';
+  }).join("");
+}
+function pasConfigure(){
+  return '<div class="erreur">Les comptes ne sont pas encore activés sur ce site. Suivez le guide de mise en ligne (étape 2) pour les activer.</div>';
+}
+function boutonContact(s){
+  return '<div class="rangee"><a class="btn btn-wa" href="' + waLien(s.msg) + '" target="_blank" rel="noopener">Contacter sur WhatsApp</a>' +
+         '<a class="btn btn-or" href="#devis">Demander un devis</a></div>';
+}
+function lienAppeler(tel){
+  return '<a class="btn btn-clair btn-sm" href="tel:+' + esc(tel) + '">Appeler</a>' +
+         '<a class="btn btn-wa btn-sm" href="' + waLien("Bonjour, je vous contacte au sujet de ma demande Electrobass service.", tel) + '" target="_blank" rel="noopener">WhatsApp</a>';
+}
+
+/* ============ PAGES PUBLIQUES ============ */
+function vueAccueil(){
+  var cartes = SERVICES.map(function(s){ return '<a class="carte-svc" href="#service-' + s.id + '">' + ico(s.icone) + '<div><h3>' + esc(s.titre) + '</h3><p>' + esc(s.court) + '</p></div></a>'; }).join("");
+  var besoins = SERVICES.map(function(s){ return '<a class="carte-svc" href="#service-' + s.id + '">' + ico(s.icone) + '<div><h3 style="font-size:1rem">' + esc(s.choix) + '</h3></div></a>'; }).join("");
+  var cta = S.user ? '<a class="btn btn-or" href="#espace">MON ESPACE</a>' : '<a class="btn btn-or" href="#inscription">CRÉER MON COMPTE</a>';
+  return '<section class="hero band"><svg class="fond" viewBox="0 0 400 400" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M20 80h120l40 40h120M20 160h80l30 30h100l40-40h110M20 240h200l30-30h130M20 320h60l40-40h180"/><circle cx="140" cy="80" r="7"/><circle cx="300" cy="120" r="7"/><circle cx="230" cy="190" r="7"/><circle cx="250" cy="210" r="7"/><circle cx="120" cy="280" r="7"/></svg>' +
+   '<div class="wrap"><span class="tag">' + esc(SITE.ville) + '</span><h1>Bienvenue chez ' + esc(SITE.nom) + '</h1><p class="slogan">' + esc(SITE.slogan) + '</p>' +
+   '<p class="lead">Nous vous accompagnons dans vos besoins en électricité, installations électriques, énergie solaire, maintenance, vidéosurveillance et solutions électroniques. Notre objectif est de vous proposer des solutions adaptées, fiables et accessibles.</p>' +
+   '<div class="rangee">' + cta + '<a class="btn btn-clair" href="#devis">DEMANDER UN DEVIS</a>' +
+   '<a class="btn btn-wa" href="' + waLien("Bonjour Electrobass service, je vous contacte depuis votre site Web.") + '" target="_blank" rel="noopener">CONTACTER SUR WHATSAPP</a></div></div></section>' +
+   '<section class="bloc"><div class="wrap"><header><h2>Dépannage urgent ou installation ?</h2><p class="sous">Créez un compte gratuit, décrivez votre besoin : la demande est envoyée aux professionnels de la bonne spécialité.</p></header>' +
+   '<div class="rangee"><a class="btn btn-or" href="' + (S.user ? "#espace" : "#inscription") + '">Faire une demande</a>' +
+   '<a class="btn btn-clair" href="' + waLien(svc("depannage").msg) + '" target="_blank" rel="noopener">Dépannage urgent sur WhatsApp</a></div></div></section>' +
+   '<section class="bloc alt band"><div class="wrap"><header><h2>Nos services</h2><p class="sous">Six domaines d\'intervention. Touchez un service pour voir le détail.</p></header><div class="grille">' + cartes + '</div></div></section>' +
+   '<section class="bloc"><div class="wrap"><header><h2>De quoi avez-vous besoin ?</h2><p class="sous">Choisissez votre besoin, nous vous menons à la bonne page.</p></header><div class="grille">' + besoins + '</div></div></section>' +
+   '<section class="bloc alt band"><div class="wrap"><div class="deux">' +
+   '<div class="boite">' + ico("puce") + '<h3 style="margin-top:12px">Composants électroniques</h3><p class="sous" style="margin-top:6px">Arduino, capteurs, modules. Proposés sur commande, après vérification de la disponibilité.</p><div class="rangee" style="margin-top:14px"><a class="btn btn-bleu btn-sm" href="#boutique">Voir la boutique</a></div></div>' +
+   '<div class="boite">' + ico("equipe") + '<h3 style="margin-top:12px">Vous êtes électricien ou électronicien ?</h3><p class="sous" style="margin-top:6px">Rejoignez nos partenaires et recevez des demandes de clients dans votre spécialité.</p><div class="rangee" style="margin-top:14px"><a class="btn btn-bleu btn-sm" href="#inscription-partenaire">Devenir partenaire</a></div></div>' +
+   '</div></div></section>';
+}
+function vueService(id){
+  var s = svc(id); if (!s) return vueAccueil();
+  var autres = SERVICES.filter(function(x){ return x.id !== id; }).map(function(x){ return '<a class="carte-svc" href="#service-' + x.id + '">' + ico(x.icone) + '<div><h3 style="font-size:1rem">' + esc(x.titre) + '</h3></div></a>'; }).join("");
+  var demande = id === "electronique"
+    ? '<a class="btn btn-or" href="#boutique">Voir la boutique</a>'
+    : '<a class="btn btn-or" href="' + (S.user ? "#espace" : "#inscription") + '">Faire une demande dans l\'application</a>';
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › ' + esc(s.titre) + '</div>' + ico(s.icone) + '<h1>' + esc(s.titre) + '</h1>' +
+   '<p class="sous">' + esc(s.desc) + '</p>' +
+   '<div class="boite"><h3>Ce que nous faisons</h3><ul class="liste">' + s.points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join("") + '</ul></div>' +
+   boutonContact(s) + '<div class="rangee">' + demande + '</div>' +
+   '<div class="note">Les prix dépendent de chaque situation. Décrivez votre besoin pour recevoir un devis adapté.</div>' +
+   '<h2 style="margin-top:10px">Autres services</h2><div class="grille">' + autres + '</div></div>';
+}
+function vueDevis(){
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › Demande de devis</div><h1>Demander un devis</h1>' +
+   '<p class="sous">Remplissez ce formulaire. Il prépare un message WhatsApp que vous n\'avez plus qu\'à envoyer.</p>' +
+   '<div class="boite"><form class="f" id="f-devis">' +
+   '<label for="d-nom">Nom<input id="d-nom" required autocomplete="name"></label>' +
+   '<label for="d-tel">Téléphone<input id="d-tel" type="tel" inputmode="tel" required autocomplete="tel"></label>' +
+   '<label for="d-ville">Ville et quartier<input id="d-ville" required placeholder="Ex. Ouagadougou, Tampouy"></label>' +
+   '<label for="d-presta">Type de prestation<select id="d-presta" required>' + optionsServices("") + '<option value="autre">Autre</option></select></label>' +
+   '<label for="d-desc">Description du projet<textarea id="d-desc" required placeholder="Décrivez votre besoin : lieu, problème, taille du projet…"></textarea></label>' +
+   '<div class="note">Photos : après l\'ouverture de WhatsApp, joignez vos photos à la conversation avec le bouton trombone.</div>' +
+   '<button class="btn btn-wa" type="submit">Envoyer ma demande sur WhatsApp</button></form></div></div>';
+}
+function vueBoutique(){
+  var c = CATEGORIES_BOUTIQUE.map(function(k){
+    var msg = "Bonjour Electrobass service, je souhaite commander : " + k.nom + ". Voici ce que je cherche : ";
+    return '<div class="boite" style="display:grid;gap:10px;align-content:start"><h3>' + esc(k.nom) + '</h3><p class="sous" style="font-size:.93rem">' + esc(k.txt) + '</p><a class="btn btn-or btn-sm" href="' + waLien(msg) + '" target="_blank" rel="noopener">Demander ce produit</a></div>';
+  }).join("");
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › Boutique électronique</div><h1>Boutique électronique</h1>' +
+   '<p class="sous">Composants électroniques et accessoires Arduino. Tout est proposé sur commande : nous vérifions la disponibilité auprès des fournisseurs, puis nous vous répondons avec le prix.</p>' +
+   '<div class="grille">' + c + '</div><div class="note">Pas de stock affiché et pas de prix publiés. Chaque demande reçoit une réponse personnalisée.</div></div>';
+}
+function vueRealisations(){
+  var corps = REALISATIONS.length
+    ? '<div class="grille">' + REALISATIONS.map(function(r){ return '<figure class="boite" style="margin:0;padding:0;overflow:hidden"><img src="' + esc(r.src) + '" alt="' + esc(r.legende) + '" style="width:100%;display:block"><figcaption style="padding:10px 14px;color:var(--doux)">' + esc(r.legende) + '</figcaption></figure>'; }).join("") + '</div>'
+    : '<div class="vide"><h3>Nos photos arrivent bientôt</h3><p>Installations, câblage, tableaux électriques, éclairages, caméras : nos vrais chantiers seront publiés ici.</p><a class="btn btn-wa btn-sm" href="' + waLien("Bonjour Electrobass service, je voudrais voir des exemples de vos réalisations.") + '" target="_blank" rel="noopener">Demander des exemples sur WhatsApp</a></div>';
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › Nos réalisations</div><h1>Nos réalisations</h1>' + corps + '</div>';
+}
+function vueCommission(){
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › Commission</div><h1>Commission sur les chantiers</h1>' +
+   '<p class="sous">Pour les partenaires : l\'inscription est gratuite. La commission n\'est due qu\'une fois le chantier confirmé par le client, selon son montant.</p>' +
+   '<div class="defil"><table><thead><tr><th>Montant du chantier</th><th class="num">Commission</th></tr></thead><tbody>' +
+   '<tr><td>Moins de ' + fcfa(SITE.seuil) + '</td><td class="num">' + SITE.tauxBas + ' %</td></tr>' +
+   '<tr><td>' + fcfa(SITE.seuil) + ' ou plus</td><td class="num">' + SITE.tauxHaut + ' %</td></tr></tbody></table></div>' +
+   '<div class="boite"><h3>Calculez la commission</h3><form class="f" id="f-calc" style="margin-top:12px"><label for="c-montant">Montant du chantier (F CFA)<input id="c-montant" inputmode="numeric" placeholder="Ex. 25000" autocomplete="off"></label></form>' +
+   '<p class="aide" id="c-taux" style="margin-top:10px">Entrez un montant.</p><p class="montant" id="c-res" style="margin-top:4px">–</p></div></div>';
+}
+function vuePolitique(){
+  return '<div class="wrap page"><div class="fil"><a href="#accueil">Accueil</a> › Politique de l\'application</div><h1>Politique de l\'application</h1>' +
+   '<div class="texte">' +
+   '<p class="aide">Texte de départ, simple et clair. Faites-le relire et adaptez-le avant de l\'annoncer comme texte officiel.</p>' +
+   '<h2>Qui sommes-nous</h2><p>' + esc(SITE.nom) + ' est une entreprise basée à ' + esc(SITE.ville) + '. Nous mettons en relation des clients et des professionnels de l\'électricité, de l\'électrotechnique, du solaire, de la vidéosurveillance et de l\'électronique.</p>' +
+   '<h2>Les informations que nous gardons</h2><p>Votre nom, votre numéro de téléphone, votre quartier, et les descriptions de vos demandes. Pour un partenaire : ses spécialités. Votre mot de passe est protégé et personne ne peut le lire.</p>' +
+   '<h2>Qui voit vos informations</h2><p>Votre numéro n\'est montré à l\'autre personne (client ou partenaire) qu\'après qu\'un partenaire a accepté la demande. Il n\'est jamais affiché sur le site. Nous ne vendons pas vos informations.</p>' +
+   '<h2>Comment fonctionne une demande</h2><ul class="liste"><li>Le client décrit son besoin.</li><li>Un partenaire de la bonne spécialité accepte la demande.</li><li>Client et partenaire se contactent et fixent le prix ensemble.</li><li>Le partenaire déclare le montant du chantier, le client le confirme dans l\'application.</li></ul>' +
+   '<h2>Commission</h2><p>Une commission est due par le partenaire à ' + esc(SITE.nom) + ' sur chaque chantier confirmé : ' + SITE.tauxBas + ' % du montant sous ' + fcfa(SITE.seuil) + ', ' + SITE.tauxHaut + ' % à partir de ' + fcfa(SITE.seuil) + '. Le client ne paie aucune commission. Tant qu\'une commission n\'est pas payée, le partenaire ne peut pas accepter de nouvelle demande.</p>' +
+   '<h2>Montants et désaccords</h2><p>Le client peut contester un montant déclaré. ' + esc(SITE.nom) + ' examine alors la situation avec les deux personnes.</p>' +
+   '<h2>Responsabilités</h2><p>' + esc(SITE.nom) + ' met en relation. Le travail est réalisé par le partenaire, qui en est responsable. Un compte peut être bloqué en cas de fausse déclaration ou de comportement abusif.</p>' +
+   '<h2>Nous contacter</h2><p>WhatsApp : <a href="' + waLien("Bonjour Electrobass service, j'ai une question sur l'application.") + '" target="_blank" rel="noopener">' + esc(SITE.tel) + '</a></p>' +
+   '</div></div>';
+}
+
+/* ============ COMPTES ============ */
+function vueConnexion(){
+  if (S.user) { location.hash = "#espace"; return ""; }
+  return '<div class="wrap page" style="max-width:520px"><h1>Connexion</h1>' + (sb ? '' : pasConfigure()) +
+   '<div class="boite"><form class="f" id="f-login">' +
+   '<label for="l-tel">Numéro de téléphone<input id="l-tel" type="tel" inputmode="tel" required autocomplete="username" placeholder="Ex. 70 12 34 56"></label>' +
+   '<label for="l-mdp">Mot de passe<input id="l-mdp" type="password" required autocomplete="current-password"></label>' +
+   '<div class="erreur" id="l-err" hidden></div>' +
+   '<button class="btn btn-or" type="submit">Se connecter</button></form></div>' +
+   '<p class="sous">Pas encore de compte ? <a href="#inscription">Créer un compte client</a> · <a href="#inscription-partenaire">Devenir partenaire</a></p>' +
+   '<p class="aide">Mot de passe oublié ? Écrivez-nous sur WhatsApp, nous vous aiderons.</p></div>';
+}
+function vueInscription(partenaire){
+  if (S.user) { location.hash = "#espace"; return ""; }
+  var champsPro = partenaire
+    ? '<fieldset><legend>Vos spécialités</legend>' + SERVICES.filter(function(s){ return s.id !== "electronique"; }).map(function(s){
+        return '<label class="choix-ligne" for="i-s-' + s.id + '"><input type="checkbox" id="i-s-' + s.id + '" name="svc" value="' + s.id + '">' + esc(s.titre) + '</label>'; }).join("") + '</fieldset>'
+    : '';
+  return '<div class="wrap page" style="max-width:520px"><h1>' + (partenaire ? 'Devenir partenaire' : 'Créer mon compte') + '</h1>' + (sb ? '' : pasConfigure()) +
+   '<p class="sous">' + (partenaire
+     ? 'Recevez des demandes de clients dans votre spécialité. Votre compte est validé par ' + esc(SITE.nom) + ' avant de recevoir des demandes.'
+     : 'Gratuit. Votre numéro de téléphone sert d\'identifiant.') + '</p>' +
+   '<div class="boite"><form class="f" id="f-inscr" data-role="' + (partenaire ? "partner" : "client") + '">' +
+   '<label for="i-nom">Nom complet<input id="i-nom" required autocomplete="name"></label>' +
+   '<label for="i-tel">Numéro de téléphone<input id="i-tel" type="tel" inputmode="tel" required autocomplete="username" placeholder="Ex. 70 12 34 56"><span class="aide">Ce sera votre identifiant. Utilisez un numéro joignable sur WhatsApp.</span></label>' +
+   '<label for="i-quartier">Quartier<input id="i-quartier" required placeholder="Ex. Tampouy"></label>' + champsPro +
+   '<label for="i-mdp">Mot de passe<input id="i-mdp" type="password" required minlength="6" autocomplete="new-password"><span class="aide">Au moins 6 caractères.</span></label>' +
+   '<label class="choix-ligne" for="i-ok"><input type="checkbox" id="i-ok" required>J\'ai lu la <a href="#politique">politique de l\'application</a></label>' +
+   '<div class="erreur" id="i-err" hidden></div>' +
+   '<button class="btn btn-or" type="submit">' + (partenaire ? 'Envoyer ma candidature' : 'Créer mon compte') + '</button></form></div>' +
+   '<p class="sous">Déjà un compte ? <a href="#connexion">Se connecter</a></p></div>';
+}
+function brancherLogin(){
+  var f = $("#f-login"); if (!f) return;
+  f.addEventListener("submit", function(e){
+    e.preventDefault(); if (!sb) return;
+    var tel = normTel($("#l-tel").value), err = $("#l-err"), b = $("button", f);
+    if (!telValide(tel)) { err.textContent = "Numéro invalide. Entrez 8 chiffres, par exemple 70 12 34 56."; err.hidden = false; return; }
+    b.disabled = true; err.hidden = true;
+    sb.auth.signInWithPassword({ email: emailFictif(tel), password: $("#l-mdp").value }).then(function(r){
+      if (r.error) throw r.error;
+      toast("Connexion réussie."); location.hash = "#espace";
+    }).catch(function(x){ err.textContent = msgErreur(x); err.hidden = false; }).then(function(){ b.disabled = false; });
+  });
+}
+function brancherInscription(){
+  var f = $("#f-inscr"); if (!f) return;
+  f.addEventListener("submit", function(e){
+    e.preventDefault(); if (!sb) return;
+    var tel = normTel($("#i-tel").value), err = $("#i-err"), b = $("button[type=submit]", f), role = f.getAttribute("data-role");
+    var services = $$("input[name=svc]:checked", f).map(function(x){ return x.value; });
+    if (!telValide(tel)) { err.textContent = "Numéro invalide. Entrez 8 chiffres, par exemple 70 12 34 56."; err.hidden = false; return; }
+    if (role === "partner" && !services.length) { err.textContent = "Choisissez au moins une spécialité."; err.hidden = false; return; }
+    b.disabled = true; err.hidden = true;
+    sb.auth.signUp({ email: emailFictif(tel), password: $("#i-mdp").value,
+      options: { data: { full_name: $("#i-nom").value.trim(), phone: tel, quartier: $("#i-quartier").value.trim(), role: role, services: services } } })
+    .then(function(r){
+      if (r.error) throw r.error;
+      if (!r.data.session) { err.textContent = "Compte créé, mais la connexion automatique est désactivée. Connectez-vous avec votre numéro."; err.hidden = false; return; }
+      toast(role === "partner" ? "Candidature envoyée. Elle sera validée par " + SITE.nom + "." : "Compte créé. Bienvenue !");
+      location.hash = "#espace";
+    }).catch(function(x){ err.textContent = msgErreur(x); err.hidden = false; }).then(function(){ b.disabled = false; });
+  });
+}
+
+/* ============ ESPACE : AIGUILLAGE ============ */
+function vueEspace(){
+  if (!sb) return '<div class="wrap page"><h1>Mon espace</h1>' + pasConfigure() + '</div>';
+  if (!S.user) { location.hash = "#connexion"; return ""; }
+  if (!S.profile) return '<div class="wrap page"><h1>Mon espace</h1><div class="boite"><p>Chargement de votre profil…</p></div></div>';
+  var r = S.profile.role;
+  if (r === "admin") return '<div class="wrap page"><h1>Administration</h1><div id="espace-corps"><div class="boite"><p>Chargement…</p></div></div></div>';
+  if (r === "partner") return '<div class="wrap page"><h1>Espace partenaire</h1><div id="espace-corps"><div class="boite"><p>Chargement…</p></div></div></div>';
+  return '<div class="wrap page"><h1>Mon espace</h1><div id="espace-corps"><div class="boite"><p>Chargement…</p></div></div></div>';
+}
+function chargerEspace(){
+  if (!sb || !S.user || !S.profile) return;
+  var r = S.profile.role;
+  if (r === "admin") return espaceAdmin();
+  if (r === "partner") return espacePartenaire();
+  return espaceClient();
+}
+function carteContact(id){
+  return '<div class="contact" data-contact="' + esc(id) + '"><button class="btn btn-clair btn-sm" data-act="contact" data-id="' + esc(id) + '" type="button">Voir les coordonnées</button></div>';
+}
+function badge(cls, txt){ return '<span class="pastille s-' + esc(cls) + '">' + esc(txt) + '</span>'; }
+
+/* ---------- Client ---------- */
+function espaceClient(){
+  var corps = $("#espace-corps"); if (!corps) return;
+  var form =
+   '<div class="boite"><h2 style="margin-bottom:12px">Nouvelle demande</h2><form class="f" id="f-req">' +
+   '<label for="r-svc">Que vous faut-il ?<select id="r-svc" required>' + optionsServices("", true) + '</select></label>' +
+   '<label for="r-quartier">Quartier<input id="r-quartier" required value="' + esc(S.profile.quartier || "") + '"></label>' +
+   '<label for="r-desc">Décrivez votre besoin<textarea id="r-desc" required placeholder="Ex. Le disjoncteur saute dès que j\'allume le fer à repasser."></textarea></label>' +
+   '<label class="choix-ligne" for="r-urg"><input type="checkbox" id="r-urg">C\'est urgent</label>' +
+   '<div class="erreur" id="r-err" hidden></div>' +
+   '<button class="btn btn-or" type="submit">Envoyer ma demande</button></form></div>';
+  corps.innerHTML =
+   '<p class="sous">Bonjour ' + esc(S.profile.full_name) + '. ' + esc(SITE.nom) + ' envoie votre demande aux professionnels de la bonne spécialité.</p>' + form +
+   '<div class="rangee" style="justify-content:space-between;align-items:center"><h2>Mes demandes</h2><button class="btn btn-clair btn-sm" data-act="rafraichir" type="button">Actualiser</button></div>' +
+   '<div id="liste" class="liste-cartes"><div class="boite"><p>Chargement…</p></div></div>';
+  $("#f-req").addEventListener("submit", function(e){
+    e.preventDefault();
+    var b = $("button[type=submit]", e.target), err = $("#r-err"); b.disabled = true; err.hidden = true;
+    sb.from("requests").insert({ client_id: S.user.id, service: $("#r-svc").value, quartier: $("#r-quartier").value.trim(), description: $("#r-desc").value.trim(), urgent: $("#r-urg").checked })
+      .then(function(r){
+        if (r.error) throw r.error;
+        e.target.reset(); $("#r-quartier").value = S.profile.quartier || "";
+        toast("Demande envoyée. Un partenaire va vous répondre."); chargerClient();
+      }).catch(function(x){ err.textContent = msgErreur(x); err.hidden = false; }).then(function(){ b.disabled = false; });
+  });
+  chargerClient();
+}
+function chargerClient(){
+  sb.from("requests").select("*").eq("client_id", S.user.id).order("created_at", { ascending: false }).limit(50).then(function(r){
+    var zone = $("#liste"); if (!zone) return;
+    if (r.error) { zone.innerHTML = '<div class="erreur">Impossible de charger vos demandes.</div>'; return; }
+    if (!r.data.length) { zone.innerHTML = '<div class="vide"><p>Aucune demande pour le moment. Envoyez la première avec le formulaire ci-dessus.</p></div>'; return; }
+    zone.innerHTML = r.data.map(carteClient).join("");
+  });
+}
+function carteClient(x){
+  var actions = "";
+  if (x.status === "nouvelle") actions = '<div class="rangee"><button class="btn btn-rouge btn-sm" data-act="annuler" data-id="' + x.id + '" type="button">Annuler la demande</button></div>';
+  if (x.status === "acceptee") actions = carteContact(x.id) + '<div class="rangee"><button class="btn btn-rouge btn-sm" data-act="annuler" data-id="' + x.id + '" type="button">Annuler la demande</button></div>';
+  if (x.status === "montant_declare") actions =
+    '<div class="note">Le partenaire déclare un montant de <b>' + fcfa(x.amount) + '</b>. Est-ce le montant convenu avec lui ?</div>' +
+    '<div class="rangee"><button class="btn btn-or btn-sm" data-act="confirmer" data-id="' + x.id + '" type="button">Oui, je confirme</button>' +
+    '<button class="btn btn-rouge btn-sm" data-act="contester" data-id="' + x.id + '" type="button">Non, je conteste</button></div>' + carteContact(x.id);
+  if (x.status === "litige") actions = '<div class="note">Vous avez contesté le montant. ' + esc(SITE.nom) + ' va vous contacter.</div>';
+  if (x.status === "confirmee") actions = '<div class="aide">Chantier terminé. Montant confirmé : ' + fcfa(x.amount) + '. Merci de votre confiance.</div>';
+  return '<div class="boite demande"><div class="tete"><h3>' + esc(svcNom(x.service)) + (x.urgent ? ' · Urgent' : '') + '</h3>' + badge(x.status, STATUTS[x.status] || x.status) + '</div>' +
+    '<div class="meta">' + esc(x.quartier) + ' · ' + dateCourte(x.created_at) + '</div><div class="desc">' + esc(x.description) + '</div>' + actions + '</div>';
+}
+
+/* ---------- Partenaire ---------- */
+function espacePartenaire(){
+  var corps = $("#espace-corps"); if (!corps) return;
+  var p = S.profile;
+  if (p.status === "en_attente") { corps.innerHTML = '<div class="note">Votre candidature est en cours de validation par ' + esc(SITE.nom) + '. Vous pourrez recevoir des demandes dès qu\'elle sera acceptée.</div>'; return; }
+  if (p.status === "bloque") { corps.innerHTML = '<div class="erreur">Votre compte est bloqué. Contactez ' + esc(SITE.nom) + ' sur WhatsApp.</div>'; return; }
+  corps.innerHTML =
+   '<p class="sous">Bonjour ' + esc(p.full_name) + '. Spécialités : ' + esc((p.services || []).map(svcNom).join(", ") || "aucune") + '.</p>' +
+   '<div id="p-resume"></div>' +
+   '<div class="rangee" style="justify-content:space-between;align-items:center"><h2>Demandes disponibles</h2><button class="btn btn-clair btn-sm" data-act="rafraichir" type="button">Actualiser</button></div>' +
+   '<div id="p-ouvertes" class="liste-cartes"><div class="boite"><p>Chargement…</p></div></div>' +
+   '<h2>Mes chantiers</h2><div id="p-mes" class="liste-cartes"><div class="boite"><p>Chargement…</p></div></div>';
+  chargerPartenaire();
+  clearInterval(window.__poll);
+  window.__poll = setInterval(function(){ if (location.hash === "#espace" && S.profile && S.profile.role === "partner" && !document.hidden) chargerPartenaire(true); }, 30000);
+}
+function chargerPartenaire(silencieux){
+  sb.from("requests").select("*").order("created_at", { ascending: false }).limit(100).then(function(r){
+    if (r.error) { if (!silencieux) toast("Impossible de charger les demandes.", true); return; }
+    var uid = S.user.id;
+    var ouvertes = r.data.filter(function(x){ return x.status === "nouvelle"; });
+    var mes = r.data.filter(function(x){ return x.partner_id === uid; });
+    var dues = mes.filter(function(x){ return x.commission_status === "due"; });
+    var aVerifier = mes.filter(function(x){ return x.commission_status === "declaree_payee"; });
+    var totalDu = dues.reduce(function(s, x){ return s + (x.commission || 0); }, 0);
+    var res = $("#p-resume"); if (!res) return;
+    var bloque = dues.length > 0;
+    res.innerHTML =
+      (bloque ? '<div class="erreur"><b>Commission à payer : ' + fcfa(totalDu) + '.</b> Tant qu\'elle n\'est pas payée, vous ne pouvez pas accepter de nouvelle demande.<br>' + esc(SITE.paiement) + '</div>' : '') +
+      '<div class="resume"><div class="boite"><span class="aide">Demandes disponibles</span><div class="gros">' + ouvertes.length + '</div></div>' +
+      '<div class="boite"><span class="aide">Chantiers en cours</span><div class="gros">' + mes.filter(function(x){ return x.status === "acceptee" || x.status === "montant_declare"; }).length + '</div></div>' +
+      '<div class="boite"><span class="aide">Commission à payer</span><div class="gros">' + fcfa(totalDu) + '</div></div>' +
+      '<div class="boite"><span class="aide">Paiement à vérifier</span><div class="gros">' + aVerifier.length + '</div></div></div>';
+    var zo = $("#p-ouvertes");
+    zo.innerHTML = ouvertes.length ? ouvertes.map(function(x){
+      return '<div class="boite demande"><div class="tete"><h3>' + esc(svcNom(x.service)) + (x.urgent ? ' · Urgent' : '') + '</h3><span class="meta">' + dateCourte(x.created_at) + '</span></div>' +
+        '<div class="meta">' + esc(x.quartier) + '</div><div class="desc">' + esc(x.description) + '</div>' +
+        '<div class="rangee"><button class="btn btn-or btn-sm" data-act="accepter" data-id="' + x.id + '" type="button"' + (bloque ? ' disabled' : '') + '>Accepter cette demande</button></div></div>';
+    }).join("") : '<div class="vide"><p>Aucune demande pour le moment dans vos spécialités. Cette page s\'actualise toute seule.</p></div>';
+    var zm = $("#p-mes");
+    zm.innerHTML = mes.length ? mes.map(carteMesChantiers).join("") : '<div class="vide"><p>Vos chantiers apparaîtront ici après avoir accepté une demande.</p></div>';
+  });
+}
+function carteMesChantiers(x){
+  var actions = "";
+  if (x.status === "acceptee") actions = carteContact(x.id) +
+    '<form class="f" data-form="montant" data-id="' + x.id + '"><div class="inline"><label for="m-' + x.id + '">Montant du chantier (F CFA)<input id="m-' + x.id + '" inputmode="numeric" required placeholder="Ex. 25000" autocomplete="off"></label>' +
+    '<button class="btn btn-or btn-sm" type="submit">Déclarer le montant</button></div>' +
+    '<p class="aide" data-apercu>La commission vous sera indiquée après confirmation du client.</p></form>';
+  if (x.status === "montant_declare") actions = '<div class="note">Montant déclaré : <b>' + fcfa(x.amount) + '</b>. En attente de la confirmation du client.</div>' + carteContact(x.id);
+  if (x.status === "litige") actions = '<div class="note">Le client conteste le montant. ' + esc(SITE.nom) + ' va vous contacter.</div>';
+  if (x.status === "confirmee") {
+    actions = '<div class="rangee" style="align-items:center"><span class="montant">' + fcfa(x.amount) + '</span><span class="aide">Commission : ' + fcfa(x.commission) + '</span>' + badge(x.commission_status, STATUTS_COMM[x.commission_status] || "") + '</div>';
+    if (x.commission_status === "due") actions += '<div class="note">' + esc(SITE.paiement) + '</div><div class="rangee"><button class="btn btn-or btn-sm" data-act="paye" data-id="' + x.id + '" type="button">J\'ai payé la commission</button></div>';
+  }
+  if (x.status === "annulee") actions = '<div class="aide">Le client a annulé cette demande.</div>';
+  return '<div class="boite demande"><div class="tete"><h3>' + esc(svcNom(x.service)) + '</h3>' + badge(x.status, STATUTS[x.status] || x.status) + '</div>' +
+    '<div class="meta">' + esc(x.quartier) + ' · ' + dateCourte(x.created_at) + '</div><div class="desc">' + esc(x.description) + '</div>' + actions + '</div>';
+}
+
+/* ---------- Administrateur ---------- */
+var adminOnglet = "pros";
+function espaceAdmin(){
+  var corps = $("#espace-corps"); if (!corps) return;
+  corps.innerHTML =
+   '<div id="a-resume"></div>' +
+   '<div class="onglets" role="group" aria-label="Sections">' +
+   [["pros","Partenaires"],["comm","Commissions"],["litiges","Litiges"],["req","Toutes les demandes"],["clients","Clients"]].map(function(o){ return '<button type="button" data-act="onglet" data-id="' + o[0] + '" aria-pressed="' + (adminOnglet === o[0]) + '">' + o[1] + '</button>'; }).join("") +
+   '<button type="button" data-act="rafraichir">Actualiser</button></div><div id="a-corps"><div class="boite"><p>Chargement…</p></div></div>';
+  chargerAdmin();
+}
+function chargerAdmin(){
+  Promise.all([
+    sb.from("profiles").select("*").order("created_at", { ascending: false }).limit(500),
+    sb.from("requests").select("*").order("created_at", { ascending: false }).limit(500)
+  ]).then(function(r){
+    if (r[0].error || r[1].error) { var z = $("#a-corps"); if (z) z.innerHTML = '<div class="erreur">Impossible de charger les données.</div>'; return; }
+    var profils = r[0].data, reqs = r[1].data, nom = {}, tel = {};
+    profils.forEach(function(p){ nom[p.id] = p.full_name; tel[p.id] = p.phone; });
+    var pros = profils.filter(function(p){ return p.role === "partner"; });
+    var dues = reqs.filter(function(x){ return x.commission_status === "due" || x.commission_status === "declaree_payee"; });
+    var litiges = reqs.filter(function(x){ return x.status === "litige"; });
+    var totalDu = dues.reduce(function(s, x){ return s + (x.commission || 0); }, 0);
+    var totalRecu = reqs.filter(function(x){ return x.commission_status === "payee"; }).reduce(function(s, x){ return s + (x.commission || 0); }, 0);
+    var attente = pros.filter(function(p){ return p.status === "en_attente"; }).length;
+    $("#a-resume").innerHTML = '<div class="resume">' +
+      '<div class="boite"><span class="aide">Partenaires à valider</span><div class="gros">' + attente + '</div></div>' +
+      '<div class="boite"><span class="aide">Commissions à recevoir</span><div class="gros">' + fcfa(totalDu) + '</div></div>' +
+      '<div class="boite"><span class="aide">Commissions reçues</span><div class="gros">' + fcfa(totalRecu) + '</div></div>' +
+      '<div class="boite"><span class="aide">Litiges</span><div class="gros">' + litiges.length + '</div></div></div>';
+    window.__adm = { profils: profils, reqs: reqs, nom: nom, tel: tel };
+    dessinerAdmin();
+  });
+}
+function dessinerAdmin(){
+  var A = window.__adm, z = $("#a-corps"); if (!A || !z) return;
+  $$(".onglets button[data-act=onglet]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-id") === adminOnglet)); });
+  var html = "";
+  if (adminOnglet === "pros") {
+    var pros = A.profils.filter(function(p){ return p.role === "partner"; });
+    html = pros.length ? '<div class="liste-cartes">' + pros.map(function(p){
+      var b = '';
+      if (p.status !== "actif") b += '<button class="btn btn-or btn-sm" data-act="statut" data-id="' + p.id + '" data-st="actif" type="button">' + (p.status === "bloque" ? "Réactiver" : "Valider") + '</button>';
+      if (p.status !== "bloque") b += '<button class="btn btn-rouge btn-sm" data-act="statut" data-id="' + p.id + '" data-st="bloque" type="button">Bloquer</button>';
+      return '<div class="boite demande"><div class="tete"><h3>' + esc(p.full_name) + '</h3>' + badge(p.status, STATUTS_PRO[p.status]) + '</div>' +
+        '<div class="meta">' + esc(telAffiche(p.phone)) + ' · ' + esc(p.quartier || "") + '</div><div class="meta">' + esc((p.services || []).map(svcNom).join(", ")) + '</div>' +
+        '<div class="rangee">' + lienAppeler(p.phone) + b + '</div></div>';
+    }).join("") + '</div>' : '<div class="vide"><p>Aucun partenaire inscrit pour le moment.</p></div>';
+  }
+  if (adminOnglet === "comm") {
+    var dues = A.reqs.filter(function(x){ return x.commission_status === "due" || x.commission_status === "declaree_payee"; });
+    html = dues.length ? '<div class="liste-cartes">' + dues.map(function(x){
+      return '<div class="boite demande"><div class="tete"><h3>' + esc(A.nom[x.partner_id] || "Partenaire") + '</h3>' + badge(x.commission_status, STATUTS_COMM[x.commission_status]) + '</div>' +
+        '<div class="meta">' + esc(svcNom(x.service)) + ' · chantier ' + fcfa(x.amount) + '</div><div class="montant">Commission : ' + fcfa(x.commission) + '</div>' +
+        '<div class="rangee">' + (A.tel[x.partner_id] ? lienAppeler(A.tel[x.partner_id]) : '') +
+        '<button class="btn btn-or btn-sm" data-act="encaisse" data-id="' + x.id + '" type="button">Paiement reçu</button></div></div>';
+    }).join("") + '</div>' : '<div class="vide"><p>Aucune commission en attente.</p></div>';
+  }
+  if (adminOnglet === "litiges") {
+    var lit = A.reqs.filter(function(x){ return x.status === "litige"; });
+    html = lit.length ? '<div class="liste-cartes">' + lit.map(function(x){
+      return '<div class="boite demande"><div class="tete"><h3>' + esc(svcNom(x.service)) + '</h3>' + badge("litige", "Montant contesté") + '</div>' +
+        '<div class="meta">Client : ' + esc(A.nom[x.client_id] || "") + ' · Partenaire : ' + esc(A.nom[x.partner_id] || "") + '</div>' +
+        '<div class="meta">Montant déclaré par le partenaire : ' + fcfa(x.amount) + '</div>' +
+        '<div class="rangee">' + (A.tel[x.client_id] ? lienAppeler(A.tel[x.client_id]) : '') + '</div>' +
+        '<form class="f" data-form="litige" data-id="' + x.id + '"><div class="inline"><label for="lt-' + x.id + '">Montant retenu (F CFA)<input id="lt-' + x.id + '" inputmode="numeric" required value="' + esc(x.amount) + '"></label>' +
+        '<button class="btn btn-or btn-sm" type="submit">Valider ce montant</button></div></form></div>';
+    }).join("") + '</div>' : '<div class="vide"><p>Aucun litige.</p></div>';
+  }
+  if (adminOnglet === "req") {
+    html = A.reqs.length ? '<div class="defil"><table><thead><tr><th>Date</th><th>Service</th><th>Client</th><th>Partenaire</th><th>Statut</th><th class="num">Montant</th><th class="num">Commission</th></tr></thead><tbody>' +
+      A.reqs.map(function(x){
+        return '<tr><td>' + dateCourte(x.created_at) + '</td><td>' + esc(svcNom(x.service)) + '</td><td>' + esc(A.nom[x.client_id] || "") + '</td><td>' + esc(A.nom[x.partner_id] || "–") + '</td><td>' + esc(STATUTS[x.status]) + '</td><td class="num">' + (x.amount ? fcfa(x.amount) : "–") + '</td><td class="num">' + (x.commission != null ? fcfa(x.commission) : "–") + '</td></tr>';
+      }).join("") + '</tbody></table></div>' : '<div class="vide"><p>Aucune demande.</p></div>';
+  }
+  if (adminOnglet === "clients") {
+    var cl = A.profils.filter(function(p){ return p.role === "client"; });
+    html = cl.length ? '<div class="defil"><table><thead><tr><th>Nom</th><th>Téléphone</th><th>Quartier</th><th>Inscrit</th></tr></thead><tbody>' +
+      cl.map(function(p){ return '<tr><td>' + esc(p.full_name) + '</td><td>' + esc(telAffiche(p.phone)) + '</td><td>' + esc(p.quartier || "") + '</td><td>' + dateCourte(p.created_at) + '</td></tr>'; }).join("") + '</tbody></table></div>' : '<div class="vide"><p>Aucun client inscrit.</p></div>';
+  }
+  z.innerHTML = html;
+}
+
+/* ============ ACTIONS (clics) ============ */
+function actionApres(){
+  var r = S.profile && S.profile.role;
+  if (r === "admin") chargerAdmin(); else if (r === "partner") chargerPartenaire(true); else chargerClient();
+}
+function faire(btn, promesse, ok){
+  btn.disabled = true;
+  promesse.then(function(){ if (ok) toast(ok); actionApres(); }).catch(function(e){ toast(msgErreur(e), true); btn.disabled = false; });
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest && e.target.closest("[data-act]"); if (!b || !sb) return;
+  var act = b.getAttribute("data-act"), id = b.getAttribute("data-id");
+  if (act === "rafraichir") { actionApres(); return; }
+  if (act === "onglet") { adminOnglet = id; dessinerAdmin(); return; }
+  if (act === "contact") {
+    b.disabled = true;
+    sb.rpc("request_contact", { rid: id }).then(function(r){
+      var box = b.parentNode;
+      if (r.error || !r.data || !r.data.length) { box.innerHTML = '<span class="aide">Coordonnées non disponibles.</span>'; return; }
+      box.innerHTML = r.data.map(function(c){
+        return '<div><b>' + esc(c.full_name) + '</b> · ' + esc(telAffiche(c.phone)) + '</div><div class="rangee">' + lienAppeler(c.phone) + '</div>';
+      }).join("");
+    });
+    return;
+  }
+  if (act === "accepter") return faire(b, rpc("accept_request", { rid: id }), "Demande acceptée. Contactez le client.");
+  if (act === "confirmer") return faire(b, rpc("confirm_amount", { rid: id }), "Montant confirmé. Merci !");
+  if (act === "contester") return confirmeDouble(b, "Confirmer la contestation ?", function(){ faire(b, rpc("contest_amount", { rid: id }), "Contestation envoyée."); });
+  if (act === "annuler") return confirmeDouble(b, "Confirmer l'annulation ?", function(){ faire(b, rpc("cancel_request", { rid: id }), "Demande annulée."); });
+  if (act === "paye") return confirmeDouble(b, "Confirmer : j'ai payé", function(){ faire(b, rpc("report_commission_paid", { rid: id }), "Merci. Le paiement sera vérifié."); });
+  if (act === "encaisse") return confirmeDouble(b, "Confirmer la réception", function(){ faire(b, rpc("admin_confirm_commission", { rid: id }), "Commission marquée comme payée."); });
+  if (act === "statut") {
+    var st = b.getAttribute("data-st");
+    var go = function(){ faire(b, rpc("admin_set_status", { uid: id, st: st }), st === "actif" ? "Partenaire activé." : "Partenaire bloqué."); };
+    if (st === "bloque") return confirmeDouble(b, "Confirmer le blocage", go); go();
+  }
+});
+document.addEventListener("submit", function(e){
+  var f = e.target; if (!sb) return;
+  var type = f.getAttribute && f.getAttribute("data-form"); if (!type) return;
+  e.preventDefault();
+  var id = f.getAttribute("data-id"), inp = $("input", f), m = parseInt(chiffres(inp.value), 10) || 0, btn = $("button[type=submit]", f);
+  if (m <= 0) { toast("Entrez un montant valide.", true); return; }
+  if (type === "montant") faire(btn, rpc("declare_amount", { rid: id, amt: m }), "Montant déclaré. En attente du client.");
+  if (type === "litige") faire(btn, rpc("admin_resolve_dispute", { rid: id, amt: m }), "Litige réglé.");
+});
+document.addEventListener("input", function(e){
+  var f = e.target.closest && e.target.closest("form[data-form=montant]"); if (!f) return;
+  var m = parseInt(chiffres(e.target.value), 10) || 0, a = $("[data-apercu]", f); if (!a) return;
+  a.textContent = m ? "Commission estimée à " + tauxPour(m) + " % : " + fcfa(commission(m)) : "La commission vous sera indiquée après confirmation du client.";
+});
+
+/* ============ ROUTEUR ============ */
+function route(){
+  var h = (location.hash || "#accueil").replace("#", "") || "accueil";
+  clearInterval(window.__poll);
+  var html, v = $("#vue"); if (!v) return;
+  if (!S.pret) { v.innerHTML = '<div class="wrap page"><p>Chargement…</p></div>'; return; }
+  if (h.indexOf("service-") === 0) html = vueService(h.slice(8));
+  else if (h === "devis") html = vueDevis();
+  else if (h === "boutique") html = vueBoutique();
+  else if (h === "realisations") html = vueRealisations();
+  else if (h === "commission") html = vueCommission();
+  else if (h === "politique") html = vuePolitique();
+  else if (h === "connexion") html = vueConnexion();
+  else if (h === "inscription") html = vueInscription(false);
+  else if (h === "inscription-partenaire") html = vueInscription(true);
+  else if (h === "espace") html = vueEspace();
+  else html = vueAccueil();
+  if (html === "") return;
+  v.innerHTML = html;
+  $$("nav.menu a").forEach(function(a){ if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  $("nav.menu").classList.remove("open"); $(".burger").setAttribute("aria-expanded", "false");
+  window.scrollTo(0, 0);
+  if (h === "devis") brancherDevis();
+  if (h === "commission") brancherCalc();
+  if (h === "connexion") brancherLogin();
+  if (h === "inscription" || h === "inscription-partenaire") brancherInscription();
+  if (h === "espace") chargerEspace();
+}
+function brancherDevis(){
+  $("#f-devis").addEventListener("submit", function(e){
+    e.preventDefault();
+    var p = $("#d-presta"), lib = p.options[p.selectedIndex].text;
+    var msg = "Bonjour Electrobass service, je vous contacte depuis votre site Web pour une demande de devis.\n\nNom : " + $("#d-nom").value.trim() +
+      "\nTéléphone : " + $("#d-tel").value.trim() + "\nVille et quartier : " + $("#d-ville").value.trim() + "\nPrestation : " + lib + "\nDescription : " + $("#d-desc").value.trim();
+    window.open(waLien(msg), "_blank", "noopener") || (location.href = waLien(msg));
+  });
+}
+function brancherCalc(){
+  $("#c-montant").addEventListener("input", function(){
+    var m = parseInt(chiffres(this.value), 10) || 0;
+    if (!m) { $("#c-taux").textContent = "Entrez un montant."; $("#c-res").textContent = "–"; return; }
+    $("#c-taux").textContent = "Chantier de " + fcfa(m) + " : taux de " + tauxPour(m) + " %";
+    $("#c-res").textContent = "Commission : " + fcfa(commission(m));
+  });
+}
+
+/* ============ ENTÊTE, PIED, ASSISTANT ============ */
+function monterEntete(){
+  var nav = [["accueil","Accueil"],["devis","Devis"],["boutique","Boutique"],["realisations","Réalisations"]];
+  var liens = nav.map(function(n){ return '<a href="#' + n[0] + '">' + n[1] + '</a>'; }).join("");
+  if (S.user) liens += '<a class="cta" href="#espace">' + (S.profile && S.profile.role === "admin" ? "Administration" : "Mon espace") + '</a><button type="button" data-out="1">Déconnexion</button>';
+  else liens += '<a href="#connexion">Connexion</a><a class="cta" href="#inscription">Créer un compte</a>';
+  var logo = '<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="9" fill="#F58220"/><path d="M19 5 9 19h7l-1.5 10L25 15h-7z" fill="#0B2545"/></svg>';
+  var cible = $("#entete");
+  cible.innerHTML = '<div class="wrap"><a class="logo" href="#accueil">' + logo + '<span>' + esc(SITE.nom) + '<small>' + esc(SITE.ville) + '</small></span></a>' +
+    '<button class="burger" type="button" aria-expanded="false" aria-controls="menu">Menu</button><nav class="menu" id="menu" aria-label="Navigation principale">' + liens + '</nav></div>';
+  var br = $(".burger", cible);
+  br.addEventListener("click", function(){ var o = $("nav.menu").classList.toggle("open"); br.setAttribute("aria-expanded", o ? "true" : "false"); });
+  var out = $("[data-out]", cible);
+  if (out) out.addEventListener("click", function(){ sb.auth.signOut().then(function(){ S.user = null; S.profile = null; monterEntete(); location.hash = "#accueil"; route(); toast("Vous êtes déconnecté."); }); });
+}
+var ASSIST = {
+ debut:{txt:"Bonjour et bienvenue chez Electrobass service. Comment pouvons-nous vous aider ?",ch:[["Voir les services","services"],["Trouver le bon service","orient"],["Faire une demande","demande"],["Demander un devis","devis"],["Questions fréquentes","faq"],["Devenir partenaire","part"]]},
+ services:{txt:"Nous intervenons en :\n• Dépannage électrique\n• Installation électrique bâtiment\n• Installation solaire\n• Électricité industrielle\n• Vidéosurveillance\n• Électronique et composants",ch:[["Trouver le bon service","orient"],["Retour","debut"]]},
+ orient:{txt:"Quel est votre besoin ?",ch:SERVICES.map(function(s){ return [s.choix, "s:" + s.id]; }).concat([["Retour","debut"]])},
+ demande:{txt:"Pour un dépannage ou une installation, créez un compte gratuit puis décrivez votre besoin. Votre demande est envoyée aux professionnels de la bonne spécialité.",ch:[["Aller à mon espace","go:espace"],["Créer un compte","go:inscription"],["Retour","debut"]]},
+ devis:{txt:"Pour un devis :\n1. Ouvrez la page « Demander un devis ».\n2. Remplissez le formulaire.\n3. Envoyez-le sur WhatsApp.",ch:[["Ouvrir le formulaire","go:devis"],["Écrire sur WhatsApp","wa"],["Retour","debut"]]},
+ faq:{txt:"Que voulez-vous savoir ?",ch:[["Quels sont vos prix ?","f-prix"],["Êtes-vous disponible ?","f-dispo"],["Vendez-vous des composants ?","f-compo"],["Retour","debut"]]},
+ "f-prix":{txt:"Nous ne publions pas de tarifs fixes, car chaque situation est différente. Envoyez-nous votre demande pour recevoir un devis adapté.",ch:[["Demander un devis","devis"],["Retour","faq"]]},
+ "f-dispo":{txt:"Pour connaître notre disponibilité, écrivez-nous sur WhatsApp. Nous vous répondrons directement.",ch:[["Écrire sur WhatsApp","wa"],["Retour","faq"]]},
+ "f-compo":{txt:"Oui, sur commande. Nous vérifions la disponibilité auprès des fournisseurs, puis nous vous répondons.",ch:[["Voir la boutique","go:boutique"],["Retour","faq"]]},
+ part:{txt:"Vous êtes électricien ou électronicien ? Inscrivez-vous comme partenaire pour recevoir des demandes. Une commission est due sur chaque chantier confirmé : " + SITE.tauxBas + " % sous 10 000 F, " + SITE.tauxHaut + " % à partir de 10 000 F.",ch:[["Devenir partenaire","go:inscription-partenaire"],["Voir le barème","go:commission"],["Retour","debut"]]}
+};
+function monterAssistant(){
+  var b = document.createElement("button"); b.className = "bulle-btn"; b.type = "button"; b.setAttribute("aria-expanded", "false");
+  b.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Assistant';
+  var c = document.createElement("div"); c.className = "chat"; c.hidden = true; c.setAttribute("role", "dialog"); c.setAttribute("aria-label", "Assistant Electrobass");
+  c.innerHTML = '<div class="ch-tete"><b>Assistant Electrobass</b><button type="button" aria-label="Fermer">×</button></div><div class="msgs" aria-live="polite"></div><div class="choix"></div>';
+  document.body.appendChild(b); document.body.appendChild(c);
+  var msgs = $(".msgs", c), choix = $(".choix", c), demarre = false, ouvert = false;
+  function bot(t){ var d = document.createElement("div"); d.className = "m bot"; d.textContent = t; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; }
+  function moi(t){ var d = document.createElement("div"); d.className = "m moi"; d.textContent = t; msgs.appendChild(d); }
+  function btn(txt, fn){ var el = document.createElement("button"); el.type = "button"; el.textContent = txt; el.addEventListener("click", fn); choix.appendChild(el); }
+  function noeud(k){
+    var n = ASSIST[k]; bot(n.txt); choix.innerHTML = "";
+    n.ch.forEach(function(x){
+      var lab = x[0], cible = x[1];
+      if (cible === "wa") { var a = document.createElement("a"); a.className = "wa"; a.href = waLien("Bonjour Electrobass service, je vous contacte depuis votre site Web."); a.target = "_blank"; a.rel = "noopener"; a.textContent = lab; choix.appendChild(a); }
+      else if (cible.indexOf("s:") === 0) {
+        var s = svc(cible.slice(2));
+        btn(lab, function(){
+          moi(lab); bot("Voici la page « " + s.titre + " », avec le détail et le bouton de contact adapté."); choix.innerHTML = "";
+          btn("Ouvrir la page", function(){ location.hash = "#service-" + s.id; fermer(); });
+          var w = document.createElement("a"); w.className = "wa"; w.href = waLien(s.msg); w.target = "_blank"; w.rel = "noopener"; w.textContent = "Écrire sur WhatsApp"; choix.appendChild(w);
+          btn("Retour", function(){ noeud("debut"); });
+        });
+      }
+      else if (cible.indexOf("go:") === 0) btn(lab, function(){ location.hash = "#" + cible.slice(3); fermer(); });
+      else btn(lab, function(){ moi(lab); noeud(cible); });
+    });
+  }
+  function ouvrir(){ c.hidden = false; ouvert = true; b.setAttribute("aria-expanded", "true"); if (!demarre) { demarre = true; noeud("debut"); } }
+  function fermer(){ c.hidden = true; ouvert = false; b.setAttribute("aria-expanded", "false"); }
+  b.addEventListener("click", function(){ ouvert ? fermer() : ouvrir(); });
+  $(".ch-tete button", c).addEventListener("click", fermer);
+}
+function monter(){
+  $("#app").innerHTML = '<header class="top band" id="entete"></header><main id="vue"></main>' +
+   '<footer class="pied band"><div class="wrap"><b style="font-family:var(--f-titre)">' + esc(SITE.nom) + '</b><span>' + esc(SITE.slogan) + '</span>' +
+   '<span>WhatsApp : <a href="' + waLien("Bonjour Electrobass service, je vous contacte depuis votre site Web.") + '" target="_blank" rel="noopener">' + esc(SITE.tel) + '</a></span>' +
+   '<small>Électricité · Électrotechnique · Énergie solaire · Vidéosurveillance · Électronique<br><a href="#politique">Politique de l\'application</a> · <a href="#commission">Barème de commission</a> · <a href="#inscription-partenaire">Devenir partenaire</a></small></div></footer>';
+  monterEntete(); monterAssistant();
+  window.addEventListener("hashchange", route);
+  route();
+  initSession().then(function(){ monterEntete(); route(); });
+  
+}
+monter();
+
+})();
+
+</script>
+<script>
+document.getElementById("demo").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-d]"); if(!b) return; var v=b.getAttribute("data-d");
+  if(v==="reset"){ window.__demo.reset(); location.hash="#accueil"; return; }
+  window.__demo.login(v).then(function(){ location.hash="#espace"; });
+});
+</script>
+
+</body></html>
